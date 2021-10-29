@@ -78,14 +78,13 @@ pub fn ex_14(txt: &str) -> u128 {
 }
 
 pub fn ex_17(x: f64, y: f64) -> f64 {
-    println!("{}", y);
     return match y {
         0. => 1.,
-        y if y.is_positive() & (y % 2. == 0.) => 1./(x-y),
-        y if y.is_positive() & !(y % 2. == 0.) => x * ex_17(x,y - 1.),
-        _ => {
+        y if y.is_positive() & (y % 2. == 0.) =>{
             let num = ex_17(x, y / 2.);
             num * num
-        }
+        },
+        y if y.is_positive() & !(y % 2. == 0.) => x * ex_17(x,y - 1.),
+        _ => 1./(x-y)
     };
 }
