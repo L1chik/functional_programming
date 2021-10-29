@@ -36,7 +36,7 @@ pub fn ex_7() -> (char, char) {
 
 pub fn signum(num: i32) -> i8 {
     match num {
-       num if num > 0 => 1,
+        num if num > 0 => 1,
         0 => 0,
         _ => -1,
     }
@@ -57,14 +57,35 @@ pub fn ex_12(num: i32) -> i32 {
     };
 }
 
-pub fn ex_13(val: &str) -> u32 {
-    let mut answer: u32 = 1;
-    let mut vec = val.chars().map(|x| x as u32).collect::<Vec<_>>();
+pub fn ex_13(txt: &str) -> u128 {
+    let mut answer: u128 = 1;
+    let mut vec = txt.chars().map(|x| x as u128).collect::<Vec<_>>();
 
     for el in vec.iter_mut() {
         answer *= *el;
-
     }
 
     answer
+}
+
+pub fn ex_14(txt: &str) -> u128 {
+    let answer: u128 = txt.chars()
+        .map(|x| x as u128)
+        .reduce(|x, y| x * y)
+        .unwrap();
+
+    answer
+}
+
+pub fn ex_17(x: f64, y: f64) -> f64 {
+    println!("{}", y);
+    return match y {
+        0. => 1.,
+        y if y.is_positive() & (y % 2. == 0.) => 1./(x-y),
+        y if y.is_positive() & !(y % 2. == 0.) => x * ex_17(x,y - 1.),
+        _ => {
+            let num = ex_17(x, y / 2.);
+            num * num
+        }
+    };
 }
