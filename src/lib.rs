@@ -88,3 +88,30 @@ pub fn ex_17(x: f64, y: f64) -> f64 {
         _ => 1./(x-y)
     };
 }
+
+pub fn ex_18(num1: u32, num2: u32, sum: &mut u32) -> u32 {
+    let aboba = num1.to_string();
+    let txt = &aboba[..];
+
+    let check = txt.chars().enumerate().find_map(|(i, c)| {
+        txt.chars()
+            .skip(i + 1)
+            .find(|other| c == *other)
+    });
+
+    match check {
+        None if num1 != num2 => {
+            *sum += num1;
+            ex_18(num1 + 1, num2, sum)
+        },
+        Some(c) if num1 != num2 => ex_18(num1 + 1, num2, sum),
+        _ => *sum+num2,
+    };
+    *sum + num2
+}
+
+pub fn ex_19() -> Vec<i32> {
+    let nested_vec: Vec<Vec<Vec<i32>>> = vec![vec![vec![1, 2], vec![3, 4]], vec![vec![5, 6]]];
+    let flat_vec: Vec<i32> = nested_vec.into_iter().flatten().flatten().collect();
+    flat_vec
+}
