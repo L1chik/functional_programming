@@ -1,12 +1,10 @@
 use std::cmp::max;
-use std::collections::hash_map::DefaultHasher;
 use num_bigint::{BigUint, ToBigUint};
 use num_traits::pow;
-use rand::Rng;
+use gcd::Gcd;
 // use num::signum;
 // use num_bigint::RandBigInt;
 
-use std::hash::{Hash, Hasher};
 
 pub fn ex_3(v1: i32, v2: i32) -> i32 {
     max(v1, v2)
@@ -80,11 +78,11 @@ pub fn ex_14(txt: &str) -> u128 {
 pub fn ex_17(x: f64, y: f64) -> f64 {
     return match y {
         0. => 1.,
-        y if y.is_positive() & (y % 2. == 0.) =>{
+        y if y.is_sign_positive() & (y % 2. == 0.) =>{
             let num = ex_17(x, y / 2.);
             num * num
         },
-        y if y.is_positive() & !(y % 2. == 0.) => x * ex_17(x,y - 1.),
+        y if y.is_sign_positive() & !(y % 2. == 0.) => x * ex_17(x,y - 1.),
         _ => 1./(x-y)
     };
 }
@@ -104,7 +102,7 @@ pub fn ex_18(num1: u32, num2: u32, sum: &mut u32) -> u32 {
             *sum += num1;
             ex_18(num1 + 1, num2, sum)
         },
-        Some(c) if num1 != num2 => ex_18(num1 + 1, num2, sum),
+        Some(_c) if num1 != num2 => ex_18(num1 + 1, num2, sum),
         _ => *sum+num2,
     };
     *sum + num2
@@ -114,4 +112,24 @@ pub fn ex_19() -> Vec<i32> {
     let nested_vec: Vec<Vec<Vec<i32>>> = vec![vec![vec![1, 2], vec![3, 4]], vec![vec![5, 6]]];
     let flat_vec: Vec<i32> = nested_vec.into_iter().flatten().flatten().collect();
     flat_vec
+}
+
+pub fn ex_20(val: u32, div: u32, sum: &mut Option<u32>) -> Option<u32> {
+    match val {
+        val if val % (div-1)== 0 => {
+            *sum = (div-1).to_string().chars().map(|x| {
+                print!("{}, ", x);
+                x.to_digit(10)
+            }).sum();
+
+            *sum
+        }
+        _ => ex_20(val, div-1, sum)
+    }
+}
+
+pub fn ex_21<T: std::fmt::Debug>() {
+    let vec: Vec<T> = vec![1, 'a', 4, vec![1, 2]];
+
+    println!("{:?}", vec)
 }
