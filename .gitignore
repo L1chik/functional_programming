@@ -6,3 +6,5 @@ Cargo.lock
 
 # rustfmt backup file
 **/*rs.bk
+
+.idea/
