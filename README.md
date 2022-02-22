@@ -6,7 +6,10 @@
 
 addition (+), subtraction (-), multiplication (*), division (/), power (^), the negative prefix (-)
 
->* Building the tokenizer
+>**Building the tokenizer**
+> 
+Tokenizer reads characters from an arithmetic expression and translates it into token.
+> 
 >* Building the parser
 >* Building the evaluator
 >* Error handling
