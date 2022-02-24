@@ -1,23 +1,16 @@
 use std::iter::Peekable;
 use std::str::Chars;
 
+use super::token::Token;
+
+
+////// STRUCTURES //////
 pub struct Tokenizer<'a> {
     expr: Peekable<Chars<'a>>,
 }
 
-pub enum Token {
-    Add,
-    Subtract,
-    Multiply,
-    Divide,
-    Caret,
-    LeftParen,
-    RightParen,
-    Num(f64),
-    EoF,
-}
 
-
+////// IMPLEMENTATIONS //////
 impl<'a> Tokenizer<'a> {
     pub fn new(new_expr: &'a str) -> Self {
         Tokenizer {
