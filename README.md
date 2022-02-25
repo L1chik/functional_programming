@@ -13,7 +13,11 @@ Tokenizer reads characters from an arithmetic expression and translates it into 
 > 
 Parser constructs tree of nodes with each node representing a token. Ast is a recursive tree structure of token nodes,
 the root node is a token, which contains child that are also tokens. 
+
 >* Building the evaluator
+> 
+AST is contructed -> parses each node in the node tree recursively and arrives at the final value.
+> 
 >* Error handling
 >* Building CLI
 

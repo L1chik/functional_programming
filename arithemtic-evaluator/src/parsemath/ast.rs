@@ -1,6 +1,9 @@
+use std::error;
+use self::Node::*;
+
 ////// STRUCTURES //////
 // List of AST nodes that can be constructed by Parser
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum Node {
     Add(Box<Node>, Box<Node>),
     Subtract(Box<Node>, Box<Node>),
@@ -9,4 +12,19 @@ pub enum Node {
     Caret(Box<Node>, Box<Node>),
     Negative(Box<Node>),
     Number(f64),
+}
+
+pub fn eval(expr: Node) -> Result<f64, Box<dyn error::Error>> {
+
+
+    // TODO: think about a lot of extra '?' | replace dyn errror?
+    match expr {
+        Number(i) => Ok(i),
+        Add(expr1, expr2) => Ok(eval(*expr1)? + eval(*expr2)?),
+        Subtract(expr1, expr2) => Ok(eval(*expr1)? - eval(*expr2)?),
+        Multiply(expr1, expr2) => Ok(eval(*expr1)? * eval(*expr2)?),
+        Divide(expr1, expr2) => Ok(eval(*expr1)? / eval(*expr2)?),
+        Negative(expr1) => Ok(-(eval(*expr1)?)),
+        Caret(expr1, expr2) => Ok(eval(*expr1)?.powf(eval(*expr2)?)),
+    }
 }
