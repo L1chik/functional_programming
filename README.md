@@ -21,9 +21,16 @@ AST is contructed -> parses each node in the node tree recursively and arrives a
 >**Error handling**
 > 
 >**Building CLI**
----
+
 ***
 ## -> _Template engine_
 >**Analyzing the problem**
-> 
+
 A template engine can be used to generate dynamic HTML pages. It will contain parser and HTML generator.
+
+***
+## -> _Image scaling_
+>**Analyzing the problem**
+
+> Resizes multiple images in a source folder to a specified size. Provides statistics from the image files. 
+>
