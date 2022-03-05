@@ -5,4 +5,16 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[[bin]]
+name = "imagecli"
+path = "src/image-cli.rs"
+
+[lib]
+name = "imagic"
+path = "src/imagic/mod.rs"
+
+
 [dependencies]
+image = "0.24.1"
+structopt = "0.3.26"
+thiserror = "1.0.30"
