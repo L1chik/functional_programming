@@ -1,34 +1,72 @@
 mod imagic;
-use std::path::PathBuf;
-use  crate::imagic::resize;
-use std::error::Error;
-use std::io;
-// use  crate::imagic::error;
+use crate::imagic::error::ImagicError;
+use crate::imagic::resize::{resize_request, Mode, SizeOption};
+use crate::imagic::stats::get_stats;
+
+use std::path::{Path, PathBuf};
+use std::str::FromStr;
+use structopt::StructOpt;
 
 
-fn main() -> Result<(), Box<dyn Error>>{
-    let mut path = PathBuf::from("../img/gleb1_2.jpg");
-    // let test = resize::get_image_files(path)?;
-        // let _res = vec!["../img/gleb1.jpg", "../img/gleb2.jpg"];
-    // resize::resize_image(&mut path, 300);
-    // let new_name = path
-    //     .file_stem() // Return entire file name if it exists
-    //     .unwrap()
-    //     .to_str()
-    //     .ok_or(io::ErrorKind::InvalidInput) // Transform Option into a Result, Some->Ok | None->Err(err)
-    //     .map(|f| format!("{}.png", f));
-    // path.set_extension("png");
-    // let new_name = path.file_name()
-    //     .ok_or(io::ErrorKind::InvalidInput);
-    let mut dest_folder = path.clone();
-    dest_folder.pop();
-    dest_folder.push("tmp/");
+/// STRUCTURES ///
+#[derive(StructOpt, Debug)]
+#[structopt(
+    name = "resize",
+    help = "For help type imagecli resize --help or imagecli stats --help"
+)]
 
+enum Commandline {
+    #[structopt(help = "\
+    Specifu size(small/medium/large), mode(single/all) and srcfolder")]
 
+    Resize {
+        #[structopt(long)]
+        size: SizeOption,
+        #[structopt(long)]
+        mode: Mode,
+        #[structopt(long, parse(from_os_str))]
+        src_folder: PathBuf,
+    },
 
-    println!("{:?}", dest_folder);
-    println!("{:?}", path);
-
-    Ok(())
+    #[structopt(help = "Specify srcfolder")]
+    Stats {
+        #[strucopt(long, parse(from_os_str))]
+        src_folder: PathBuf,
+    },
 }
+
+fn main() {
+    let args: Commandline = Commandline::from_args();
+
+    match args {
+        Commandline::Resize {
+            size,
+            mode,
+            mut src_folder,
+        } => {
+            match resize_request(size, mode, &mut src_folder) {
+                Ok(_) => println!("Image resized successfully"),
+                Err(e) => match e {
+                    ImagicError::FileIO(e) => println!("{}", e),
+                    ImagicError::UserInputError(e) => println!("{}", e),
+                    ImagicError::ImageResizing(e) => println!("{}", e),
+                    _ => println!("Error in processing"),
+                },
+            };
+        }
+
+        Commandline::Stats { src_folder } => match
+            get_stats(src_folder) {
+                Ok((count, size)) => println!(
+                    "Found {:?} image files with aggregate size of {:?} Mb", count, size
+                ),
+                Err(e) => match e {
+                    ImagicError::FileIO(e) => println!("{}", e),
+                    ImagicError::UserInputError(e) => println!("{}", e),
+                    _ => println!("Error in processing"),
+            },
+        },
+    }
+}
+
 

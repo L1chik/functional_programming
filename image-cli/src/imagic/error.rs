@@ -9,8 +9,8 @@ pub enum ImagicError {
     #[error("Error in file IO")]
     FileIO(#[from] io::Error),
 
-    // #[error("Invalid user input")]
-    // UserInputError(#[from] io::ErrorKind),
+    #[error("Invalid user input")]
+    UserInputError(String),
 
     #[error("Error in image processing")]
     ImageResizing(#[from] image::ImageError),
@@ -26,8 +26,8 @@ pub enum ImagicError {
 // }
 
 
-impl From<io::ErrorKind> for ImagixError {
+impl From<io::ErrorKind> for ImagicError {
     fn from(_error: io::ErrorKind) -> Self {
-        ImagixError::UserInputError("Error in user input".to_string())
+        ImagicError::UserInputError("Error in user input".to_string())
     }
 }

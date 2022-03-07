@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::{fs, io, fmt};
 use std::fmt::Formatter;
 use std::str::FromStr;
@@ -10,6 +10,19 @@ use image::imageops::FilterType;
 
 /// STRUCTURES ///
 pub struct Elapsed(Duration);
+
+#[derive(Debug, PartialEq)]
+pub enum Mode {
+    Single,
+    All,
+}
+
+#[derive(Debug)]
+pub enum SizeOption {
+    Small,
+    Medium,
+    Large,
+}
 
 
 /// IMPLEMENTATIONS ///
@@ -31,16 +44,35 @@ impl fmt::Display for Elapsed {
     }
 }
 
-pub fn resize_request() {
-    todo!()
+pub fn resize_request(size: SizeOption, mode: Mode, src: &mut PathBuf) -> Result<(), ImagicError> {
+    let size: u32 = match size {
+        SizeOption::Small => 200,
+        SizeOption::Medium => 400,
+        SizeOption::Large => 800,
+    };
+    let _ = match mode {
+        Mode::All => resize_all(size, src)?,
+        Mode::Single => resize_single(size, src)?,
+    };
+
+    Ok(())
 }
 
-fn resize_single() {
-    todo!()
+fn resize_single(size: u32, src: &mut PathBuf) -> Result<(), ImagicError> {
+     let mut src = src;
+    resize_image(&mut src, size)?;
+
+    Ok(())
 }
 
-fn resize_all() {
-    todo!()
+fn resize_all(size: u32, src: &mut PathBuf) -> Result<(), ImagicError> {
+    if let Ok(entries) = get_image_files(src.to_path_buf()) {
+        for mut entry in entries {
+            resize_image(&mut entry, size)?;
+        }
+    };
+
+    Ok(())
 }
 
 pub fn resize_image(src: &mut PathBuf, size: u32) -> Result<(), ImagicError> {
@@ -49,6 +81,8 @@ pub fn resize_image(src: &mut PathBuf, size: u32) -> Result<(), ImagicError> {
 
     let new_name = img_name
         .file_name()
+        .unwrap()
+        .to_str()
         .ok_or(io::ErrorKind::InvalidInput); // Transform Option into a Result, Some->Ok | None->Err(err)
 
     let mut dest_folder = src.clone();
@@ -61,7 +95,7 @@ pub fn resize_image(src: &mut PathBuf, size: u32) -> Result<(), ImagicError> {
 
     dest_folder.pop();
     dest_folder.push("tmp/tmp.png");
-    dest_folder.set_file_name(new_name?.as_str());
+    dest_folder.set_file_name(new_name?);
 
     let timer = Instant::now();
     let img = image::open(&src)
