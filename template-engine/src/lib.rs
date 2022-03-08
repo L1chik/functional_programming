@@ -18,7 +18,7 @@ pub enum TagType {
 }
 
 // Result of tokenization of the template string
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct ExpressionData {
     pub head: Option<String>,
     pub variable: String,

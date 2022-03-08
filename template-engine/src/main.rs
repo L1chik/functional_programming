@@ -20,7 +20,8 @@ fn main() {
             ContentType::Literal(text) => println!("{}", text),
             ContentType::Tag(TagType::ForTag) => println!("For Tag not implemented"),
             ContentType::Tag(TagType::IfTag) => println!("If Tag not implemented"),
-            ContentType::Unrecognized => println!("Unreconginzed input"),
+            ContentType::Unrecognized => println!("Unrecognized input"),
         }
     }
 }
+
