@@ -14,9 +14,6 @@ pub enum ImagicError {
 
     #[error("Error in image processing")]
     ImageResizing(#[from] image::ImageError),
-
-    #[error("Error occurred: {0}")]
-    Format(String)
 }
 
 // impl fmt::Display for ImagicError {

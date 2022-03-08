@@ -3,15 +3,14 @@ use crate::imagic::error::ImagicError;
 use crate::imagic::resize::{resize_request, Mode, SizeOption};
 use crate::imagic::stats::get_stats;
 
-use std::path::{Path, PathBuf};
-use std::str::FromStr;
+use std::path::{PathBuf};
 use structopt::StructOpt;
 
 
 /// STRUCTURES ///
 #[derive(StructOpt, Debug)]
 #[structopt(
-    name = "resize",
+    name = "resizer",
     help = "For help type imagecli resize --help or imagecli stats --help"
 )]
 
@@ -20,21 +19,22 @@ enum Commandline {
     Specifu size(small/medium/large), mode(single/all) and srcfolder")]
 
     Resize {
-        #[structopt(long)]
+        #[structopt(short = "s", long)] // lopng flag (--size)
         size: SizeOption,
-        #[structopt(long)]
+        #[structopt(short = "m", long)]
         mode: Mode,
-        #[structopt(long, parse(from_os_str))]
+        #[structopt(long = "src", parse(from_os_str))]
         src_folder: PathBuf,
     },
 
     #[structopt(help = "Specify srcfolder")]
     Stats {
-        #[strucopt(long, parse(from_os_str))]
+        #[structopt(long = "src", parse(from_os_str))]
         src_folder: PathBuf,
     },
 }
 
+#[warn(unreachable_patterns)]
 fn main() {
     let args: Commandline = Commandline::from_args();
 
@@ -50,7 +50,7 @@ fn main() {
                     ImagicError::FileIO(e) => println!("{}", e),
                     ImagicError::UserInputError(e) => println!("{}", e),
                     ImagicError::ImageResizing(e) => println!("{}", e),
-                    _ => println!("Error in processing"),
+                    // _ => println!("Error in processing"),
                 },
             };
         }

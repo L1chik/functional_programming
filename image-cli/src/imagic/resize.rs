@@ -1,11 +1,10 @@
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 use std::{fs, io, fmt};
 use std::fmt::Formatter;
 use std::str::FromStr;
 use std::time::{Instant, Duration};
 use super::error::{ImagicError, GetFilesResult};
 use image::{ImageFormat};
-use image::imageops::FilterType;
 
 
 /// STRUCTURES ///
@@ -36,10 +35,35 @@ impl fmt::Display for Elapsed {
     fn fmt(&self, out: &mut Formatter<'_>) -> fmt::Result {
         match (self.0.as_secs(), self.0.subsec_nanos()) {
             (0, n) if n < 1000 => write!(out, "{} ns", n),
-            (0, n) if n < 1000_000 => write!(out, "{} µs", n / 1000),
+            (0, n) if n < 1_000_000 => write!(out, "{} µs", n / 1000),
             (0, n) => write!(out, "{} ms", n / 1_000_000),
             (s, n) if s < 10 => write!(out, "{}.{:02} s", s, n / 10_000_000),
             (s, _) => write!(out, "{} s", s),
+        }
+    }
+}
+
+impl FromStr for SizeOption {
+    type Err = ImagicError;
+
+    fn from_str(size: &str) -> Result<Self, Self::Err> {
+        match size {
+            "small" => Ok(SizeOption::Small),
+            "medium" => Ok(SizeOption::Medium),
+            "large" => Ok(SizeOption::Large),
+            _ => Ok(SizeOption::Small) // Default value
+        }
+    }
+}
+
+impl FromStr for Mode {
+    type Err = ImagicError;
+
+    fn from_str(mode: &str) -> Result<Self, Self::Err> {
+        match mode {
+            "single" => Ok(Mode::Single),
+            "all" => Ok(Mode::All),
+            _ => Err(ImagicError::UserInputError("Wrong value for mode".to_string())),
         }
     }
 }
@@ -59,8 +83,7 @@ pub fn resize_request(size: SizeOption, mode: Mode, src: &mut PathBuf) -> Result
 }
 
 fn resize_single(size: u32, src: &mut PathBuf) -> Result<(), ImagicError> {
-     let mut src = src;
-    resize_image(&mut src, size)?;
+    resize_image(src, size)?;
 
     Ok(())
 }
@@ -101,7 +124,7 @@ pub fn resize_image(src: &mut PathBuf, size: u32) -> Result<(), ImagicError> {
     let img = image::open(&src)
         .expect("Read image failed");
 
-    let img_converted = img.thumbnail(size, size);
+    let img_converted = img.thumbnail_exact(size, size);
     let mut output = fs::File::create(&dest_folder)?;
     img_converted.write_to(&mut output, ImageFormat::Png)?;
 
@@ -113,7 +136,7 @@ pub fn resize_image(src: &mut PathBuf, size: u32) -> Result<(), ImagicError> {
 
 pub fn get_image_files(src_folder: PathBuf) -> GetFilesResult {
     let entries = fs::read_dir(src_folder)
-        .map_err(|error| ImagicError::FileIO(error))?
+        .map_err(ImagicError::FileIO)?
         .map(|res| res.map(|e| e.path()))
         .collect::<Result<Vec<_>, io::Error>>()?
         .into_iter()
@@ -134,11 +157,40 @@ mod test {
 
     #[test]
     fn test_reading_file() {
-        let mut path = PathBuf::from("../img/");
+        let path = PathBuf::from("img/");
         let test = get_image_files(path).unwrap();
 
-        assert_eq!(true, test.contains(&PathBuf::from("../img/gleb1.jpg")));
-        assert_eq!(true, test.contains(&PathBuf::from("../img/gleb2.jpg")));
-        assert_eq!(false, test.contains(&PathBuf::from("../img/gashishishpak.gif")));
+        assert_eq!(true, test.contains(&PathBuf::from("img/gleb1.jpg")));
+        assert_eq!(true, test.contains(&PathBuf::from("img/gleb2.jpg")));
+        assert_eq!(false, test.contains(&PathBuf::from("img/gashishishpak.gif")));
+    }
+
+    #[test]
+    fn test_single_image_resize() {
+        let mut path = PathBuf::from("img/gleb1_2.jpg");
+        let dest_path = PathBuf::from("img/tmp/gleb1_2.png");
+
+        match resize_request(SizeOption::Small, Mode::Single, &mut path) {
+            Ok(_) => println!("Resize of single image completed"),
+            Err(e) => println!("Error occurred: {:?}", e),
+        }
+
+        assert_eq!(true, dest_path.exists());
+    }
+
+    #[test]
+    fn test_all_image_resize() {
+        let mut path = PathBuf::from("img/");
+        let dest_path1 = PathBuf::from("img/tmp/gleb1.png");
+        let dest_path2 = PathBuf::from("img/tmp/gleb1_2.png");
+        let dest_path3= PathBuf::from("img/tmp/gleb2.png");
+        let dest_path4= PathBuf::from("img/tmp/gleb23.png");
+
+        let _res = resize_request(SizeOption::Medium, Mode::All, &mut path);
+
+        assert_eq!(true, dest_path1.exists());
+        assert_eq!(true, dest_path2.exists());
+        assert_eq!(true, dest_path3.exists());
+        assert_eq!(true, dest_path4.exists());
     }
 }

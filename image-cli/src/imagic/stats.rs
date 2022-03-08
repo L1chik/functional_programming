@@ -3,7 +3,7 @@ use super::error::ImagicError;
 use super::resize::get_image_files;
 
 pub fn get_stats(src: PathBuf) -> Result<(usize, f64), ImagicError> {
-    let image_files = get_image_files(src.to_path_buf())?;
+    let image_files = get_image_files(src)?;
     let size = image_files
         .iter()
         .map(move |f| f.metadata().unwrap().len())
