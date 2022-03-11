@@ -32,5 +32,20 @@ A template engine can be used to generate dynamic HTML pages. It will contain pa
 ## -> _Image scaling_
 >**Analyzing the problem**
 
-> Resizes multiple images in a source folder to a specified size. Provides statistics from the image files. 
->
+Resizes single/multiple images in a source folder to a specified size. Provides statistics from the image files.
+
+* Supported formats: jpg, png
+* Resize: size: [ small/medium/large | 200/400/800 ], mode: [ all/single ] 
+* Stats: Amount of images in folder, total size of all images in this folder
+
+**Usage:**
+```
+./imagecli resize [-s | --size] <small | medium | large>
+                  [-m | --mode] <single | all>
+                  --src <path-to-image-if-single | path-to-folder-if-all>
+                  
+./imagecli stats --src <path-to-folder>
+```
+
+***
+## -> _RStat_

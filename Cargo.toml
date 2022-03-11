@@ -4,4 +4,6 @@ members = [
     "arithemtic-evaluator",
     "template-engine",
     "image-cli",
+    "rstat",
+#    "test-review",
 ]
