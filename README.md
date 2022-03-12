@@ -49,3 +49,5 @@ Resizes single/multiple images in a source folder to a specified size. Provides 
 
 ***
 ## -> _RStat_
+
+Shell command that computes source code metrics for Rust source files: Blanks, Comments, Line of codes.

@@ -561,6 +561,7 @@ dependencies = [
 name = "rstat"
 version = "0.1.0"
 dependencies = [
+ "structopt",
  "thiserror",
 ]
 
