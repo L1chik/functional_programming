@@ -1,4 +1,4 @@
-use std::fmt;
+// use std::fmt;
 use std::io;
 use thiserror::Error;
 
@@ -39,7 +39,7 @@ use thiserror::Error;
 pub enum StatsError {
     #[error("Num conversion error")]
     NumConversion(#[from] std::num::TryFromIntError),
-    
+
     #[error("Wrong directory")]
     DirectoryIO(#[from] io::Error)
 }

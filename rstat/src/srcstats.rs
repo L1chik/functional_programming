@@ -1,7 +1,6 @@
 use std::ffi::OsStr;
 use std::fs;
 use std::fs::DirEntry;
-use std::path;
 use std::path::{Path, PathBuf};
 use crate::error::StatsError;
 
@@ -23,7 +22,7 @@ fn get_src_stats_for_file(file: &Path) -> StatsResult {
     let mut comments: u32 = 0;
 
     for line in file_contents.lines() {
-        if line.len() == 0 { blanks += 1; }
+        if line.is_empty() { blanks += 1; }
         else if line.trim_start().starts_with("//") {
             comments += 1;
         } else {
@@ -53,10 +52,8 @@ pub fn get_summary_src_stats(dir: &Path) -> StatsResult{
             if let Ok(entry) = inner_entry {
                 if entry.path().is_dir() {
                     dir_entries.push(entry.path());
-                } else {
-                    if entry.path().extension() == Some(OsStr::new("rs")) {
+                } else if entry.path().extension() == Some(OsStr::new("rs")) {
                         files_entries.push(entry)
-                    }
                 }
             }
         }
