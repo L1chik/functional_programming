@@ -14,4 +14,4 @@ path = "src/viewer.rs"
 
 [[bin]]
 name = "aviewer"
-path = "src/advanced_viewer.rs"
+path = "src/advanced_viewer.rs"    

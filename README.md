@@ -51,3 +51,9 @@ Resizes single/multiple images in a source folder to a specified size. Provides 
 ## -> _RStat_
 
 Shell command that computes source code metrics for Rust source files: Blanks, Comments, Line of codes.
+```
+./rstat <path to dir or file>
+```
+***
+## -> _Text viewer_
+Terminal text interface to load file from a directory and view the content.

@@ -5,5 +5,7 @@ members = [
     "template-engine",
     "image-cli",
     "rstat",
+    "text-viewer",
+    "shell",
 #    "test-review",
 ]
