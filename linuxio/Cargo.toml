@@ -1,0 +1,18 @@
+[package]
+name = "linuxio"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "tests"
+path = "src/tests.rs"
+
+[[bin]]
+name = "detectusb"
+path = "src/detectusb.rs"
+
+
+[dependencies]
+libusb = "0.3.0"
+thiserror = "1.0.30"
