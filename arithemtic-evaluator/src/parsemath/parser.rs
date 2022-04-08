@@ -1,6 +1,3 @@
-use std::f32::consts::E;
-use std::fmt::format;
-
 use super::tokenizer::Tokenizer;
 use super::token::{Token, OperPrec};
 use super::ast::Node;
@@ -163,5 +160,19 @@ impl<'a> Parser<'a> {
         self.current_token = next_token;
 
         Ok(())
+    }
+}
+
+
+// Unit tests
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::parsemath::ast::Node::{Add, Number};
+    #[test]
+    fn test_addition() {
+        let mut parser = Parser::new("1+2").unwrap();
+        let expected = Add(Box::new(Number(1.0)), Box::new(Number(2.0)));
+        assert_eq!(parser.parse().unwrap(), expected);
     }
 }

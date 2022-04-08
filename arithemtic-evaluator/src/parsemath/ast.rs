@@ -3,7 +3,7 @@ use self::Node::*;
 
 ////// STRUCTURES //////
 // List of AST nodes that can be constructed by Parser
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Node {
     Add(Box<Node>, Box<Node>),
     Subtract(Box<Node>, Box<Node>),
@@ -26,5 +26,28 @@ pub fn eval(expr: Node) -> Result<f64, Box<dyn error::Error>> {
         Divide(expr1, expr2) => Ok(eval(*expr1)? / eval(*expr2)?),
         Negative(expr1) => Ok(-(eval(*expr1)?)),
         Caret(expr1, expr2) => Ok(eval(*expr1)?.powf(eval(*expr2)?)),
+    }
+}
+
+//Unit tests
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_expr1() {
+        use crate::parsemath::parser::Parser;
+
+        let ast = Parser::new("1+2-3").unwrap().parse().unwrap();
+        let value = eval(ast).unwrap();
+        assert_eq!(value, 0.0);
+    }
+
+    #[test]
+    fn test_expr2() {
+        use crate::parsemath::parser::Parser;
+
+        let ast = Parser::new("3+2-1*5/4").unwrap().parse().unwrap();
+        let value = eval(ast).unwrap();
+        assert_eq!(value, 3.75);
     }
 }
