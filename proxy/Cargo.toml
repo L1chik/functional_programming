@@ -8,5 +8,8 @@ edition = "2021"
 name = "pxorigin"
 path = "src/bin/origin.rs"
 
+[[bin]]
+name = "proxyserver"
+path = "src/bin/proxy.rs"
 
 [dependencies]

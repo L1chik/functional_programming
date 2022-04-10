@@ -5,8 +5,19 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [[bin]]
-name = "tests"
-path = "src/tests.rs"
+name = "server"
+path = "src/udp_s.rs"
 
+[[bin]]
+name = "client"
+path = "src/udp_c.rs"
+
+[[bin]]
+name = "tcp-s"
+path = "src/tcp_s.rs"
+
+[[bin]]
+name = "tcp-c"
+path = "src/tcp_c.rs"
 
 [dependencies]

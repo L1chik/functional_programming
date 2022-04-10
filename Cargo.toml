@@ -9,5 +9,7 @@ members = [
     "shell",
     "concurrency",
     "linuxio",
+    "network",
+    "proxy"
 #    "test-review",
 ]
