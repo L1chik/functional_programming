@@ -10,6 +10,7 @@ members = [
     "concurrency",
     "linuxio",
     "network",
-    "proxy"
+    "proxy",
+    "atomics",
 #    "test-review",
 ]
