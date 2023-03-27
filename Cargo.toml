@@ -12,5 +12,6 @@ members = [
     "network",
     "proxy",
     "atomics",
+    "tips"
 #    "test-review",
 ]

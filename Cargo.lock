@@ -822,6 +822,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "tips"
+version = "0.1.0"
+
+[[package]]
 name = "unicode-segmentation"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
