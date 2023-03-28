@@ -13,4 +13,8 @@ path = "src/methods.rs"
 name = "boxes"
 path = "src/boxes.rs"
 
+[[bin]]
+name = "refs"
+path = "src/refs.rs"
+
 [dependencies]
