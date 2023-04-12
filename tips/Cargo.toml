@@ -17,4 +17,12 @@ path = "src/boxes.rs"
 name = "refs"
 path = "src/refs.rs"
 
+[[bin]]
+name = "reminder"
+path = "src/reminder.rs"
+
+[[bin]]
+name = "inv"
+path = "src/invariants.rs"
+
 [dependencies]
