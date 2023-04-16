@@ -25,4 +25,9 @@ path = "src/reminder.rs"
 name = "inv"
 path = "src/invariants.rs"
 
+[[bin]]
+name = "a1"
+path = "src/async1.rs"
+
 [dependencies]
+futures = "0.3.28"
