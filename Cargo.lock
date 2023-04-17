@@ -411,6 +411,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "intermediate"
+version = "0.1.0"
+
+[[package]]
 name = "jpeg-decoder"
 version = "0.1.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"

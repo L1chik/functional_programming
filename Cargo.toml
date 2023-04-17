@@ -12,6 +12,7 @@ members = [
     "network",
     "proxy",
     "atomics",
-    "tips"
+    "tips",
+    "intermediate"
 #    "test-review",
 ]
