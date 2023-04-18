@@ -13,6 +13,6 @@ members = [
     "proxy",
     "atomics",
     "tips",
-    "intermediate"
-#    "test-review",
+    "intermediate",
+    "rest_api",
 ]
